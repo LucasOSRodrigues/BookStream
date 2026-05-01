@@ -4,6 +4,9 @@
   "description": "Backend do app BookStream",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --exec tsx src/server.ts",
+    "build": "tsc",
+    "start": "node build/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
