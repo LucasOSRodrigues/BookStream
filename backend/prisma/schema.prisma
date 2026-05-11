@@ -5,9 +5,123 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output = "../src/generated/prisma"
+  url = env("DATABASE_URL")
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model user {
+  user_id String @id @default(nanoid())
+  name    String
+  email   String @unique
+  password_hash String
+  avatar_url String?
+  bio String?
+  followers_count Int @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  works work[]
+  likes like[]
+  following follow[] @relation("FollowRelation")
+  followers follow[] @relation("FollowedRelation")
+  comments comment[]
+  readProgresses read_progress[]
+}
+
+model genre {
+  genre_id String @id @default(nanoid())
+  name     String @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  works work[]
+}
+
+model work {
+  work_id String @id @default(nanoid())
+  title   String
+  author_id  String
+  genre_id String
+  description String?
+  cover_image_url String?
+  published_date DateTime?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  author user @relation(fields: [author_id], references: [user_id])
+  genres genre[]
+  chapters chapter[]
+}
+
+enum status {
+  draft
+  published
+}
+
+model chapter {
+  chapter_id String @id @default(nanoid())
+  work_id String
+  title String
+  content String
+  status status @default(draft)
+  published_at DateTime?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  work work @relation(fields: [work_id], references: [work_id])
+  likes like[]
+  comments comment[]
+  readProgresses read_progress[]
+}
+
+model follow {
+  follower_id String
+  followed_id String
+  created_at DateTime @default(now())
+
+  users user @relation("FollowRelation", fields: [follower_id], references: [user_id])
+  followed user @relation("FollowedRelation", fields: [followed_id], references: [user_id])
+  @@id([follower_id, followed_id])
+  @@index([followed_id])
+}
+
+model like {
+  user_id String
+  chapter_id String
+  created_at DateTime @default(now())
+
+  user user @relation(fields: [user_id], references: [user_id])
+  chapter chapter @relation(fields: [chapter_id], references: [chapter_id])
+  @@id([user_id, chapter_id])
+  @@index([chapter_id])
+}
+
+model comment {
+  comment_id String @id @default(nanoid())
+  user_id String
+  chapter_id String
+  content String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  chapter chapter @relation(fields: [chapter_id], references: [chapter_id])
+  user user @relation(fields: [user_id], references: [user_id])
+}
+
+model read_progress {
+  user_id String
+  work_id String
+  current_chapter_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user user @relation(fields: [user_id], references: [user_id])
+  chapter chapter @relation(fields: [current_chapter_id], references: [chapter_id])
+
+  @@id([user_id, work_id])
+  @@index([work_id])
 }
