@@ -4,8 +4,7 @@ import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
 const DATABASE_URL = env("DATABASE_URL");
-console.log("DATABASE_URL:", DATABASE_URL);
-// if (!DATABASE_URL) throw new Error("DATABASE_URL não definida em .env");
+if (!DATABASE_URL) throw new Error("DATABASE_URL não definida em .env");
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
