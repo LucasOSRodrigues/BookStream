@@ -33,8 +33,7 @@ model user {
 }
 
 model genre {
-  genre_id String @id @default(nanoid())
-  name     String @unique
+  name     String @unique @id
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
