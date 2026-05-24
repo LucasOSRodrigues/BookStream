@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express"
 import { WorkService } from "../services/work.service"
 import { Work } from "../shared/types/Work"
+import {z} from "zod"
+import {regexId} from "./shared/regexId"
 
 type CreateWorkRequest = Work & { genres: string[] }
 
@@ -12,22 +14,22 @@ export class WorkController {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
+    const work: CreateWorkRequest = req.body
+
+    const createWorkSchema = z.object({
+        title: z.string().min(1, "Title is required"),
+        author_id: z.string().min(1, "Author is required").regex(regexId, "Invalid author ID format"),
+        genres: z.array(z.string().min(1, "Genre is required")).min(1, "At least 1 genre is required"),
+        description: z.string().optional(),
+        cover_image_url: z.url().optional(),
+      })
+      const validation = createWorkSchema.safeParse(work)
+      if (!validation.success) {
+        res.status(400).json({ error: validation.error.issues })
+        return
+      }
+
     try {
-      const work: CreateWorkRequest = req.body
-
-      if (!work.title) {
-        res.status(400).json({ error: "Title is required" })
-        return
-      }
-      if (!work.author_id) {
-        res.status(400).json({ error: "Author is required" })
-        return
-      }
-      if (!work.genres || work.genres.length < 1) {
-        res.status(400).json({ error: "At least 1 genre is required" })
-        return
-      }
-
       const createdWork = await this.workService.createWork(work, work.genres)
       res.status(201).json(createdWork)
     } catch (error) {
