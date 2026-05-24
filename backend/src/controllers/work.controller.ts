@@ -45,7 +45,7 @@ export class WorkController {
     try {
       const work_id = req.params.work_id?.toString()
 
-      if (!work_id) {
+      if (!work_id || !regexId.test(work_id)) {
         res.status(400).json({ error: "Invalid work ID" })
         return
       }
@@ -70,7 +70,7 @@ export class WorkController {
       const work_id = req.params.work_id?.toString()
       const work: Partial<Work> = req.body
 
-      if (!work_id) {
+      if (!work_id || !regexId.test(work_id)) {
         res.status(400).json({ error: "Invalid work ID" })
         return
       }
@@ -90,7 +90,7 @@ export class WorkController {
     try {
       const work_id = req.params.work_id?.toString()
 
-      if (!work_id) {
+      if (!work_id || !regexId.test(work_id)) {
         res.status(400).json({ error: "Invalid work ID" })
         return
       }
@@ -116,7 +116,7 @@ export class WorkController {
     try {
       const genre = req.params.genre?.toString()
 
-      if (!genre) {
+      if (!genre || genre.trim() === "") {
         res.status(400).json({ error: "Genre is required" })
         return
       }
