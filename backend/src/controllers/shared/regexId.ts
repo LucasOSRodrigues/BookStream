@@ -1,0 +1,1 @@
+export const regexId = /^[a-zA-Z0-9_-]+$/
