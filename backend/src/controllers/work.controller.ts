@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { WorkService } from "../services/work.service"
-import { Work } from "../generated/prisma"
+import { Work } from "../shared/types/Work"
 
 type CreateWorkRequest = Work & { genres: string[] }
 

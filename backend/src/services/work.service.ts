@@ -1,5 +1,5 @@
 import { IWorkRepository } from "../repositories/interfaces/IWorkRepository"
-import { Work } from "../generated/prisma"
+import { Work } from "../shared/types/Work"
 
 export class WorkService {
   constructor(private workRepository: IWorkRepository) {}

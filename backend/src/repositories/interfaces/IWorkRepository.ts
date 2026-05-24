@@ -1,4 +1,4 @@
-import { Work } from "../../generated/prisma"
+import { Work } from "../../shared/types/Work"
 
 export interface IWorkRepository {
   createWork(work: Work, genres: string[]): Promise<Work>
