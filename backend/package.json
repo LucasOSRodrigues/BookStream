@@ -7,7 +7,9 @@
     "dev": "nodemon --exec tsx src/server.ts",
     "build": "tsc",
     "start": "node build/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:unit": "jest --testPathPattern=\\.spec\\.ts$",
+    "test:integration": "jest --testPathPattern=tests/"
   },
   "keywords": [],
   "author": "",
