@@ -50,7 +50,6 @@ model Work {
   work_id String @id @default(nanoid())
   title   String
   author_id  String
-  genre_id String
   description String?
   cover_image_url String?
   published_date DateTime?
