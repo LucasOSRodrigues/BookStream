@@ -4,7 +4,7 @@ import { Work } from "../shared/types/Work"
 import {z} from "zod"
 import {regexId} from "./shared/regexId"
 
-type CreateWorkRequest = Work & { genres: string[] }
+type WorkRequest = Work & { genres: string[] }
 
 export class WorkController {
   constructor(private workService: WorkService) {}
@@ -14,12 +14,12 @@ export class WorkController {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    const work: CreateWorkRequest = req.body
+    const work: WorkRequest = req.body
 
     const createWorkSchema = z.object({
         title: z.string().min(1, "Title is required"),
         author_id: z.string().min(1, "Author is required").regex(regexId, "Invalid author ID format"),
-        genres: z.array(z.string().min(1, "Genre is required")).min(1, "At least 1 genre is required"),
+        genres: z.array(z.string().min(1, "Invalid genre")).min(1, "At least 1 genre is required"),
         description: z.string().optional(),
         cover_image_url: z.url().optional(),
       })
@@ -74,7 +74,7 @@ export class WorkController {
         res.status(400).json({ error: "Invalid work ID" })
         return
       }
-
+      // TODO: updateWork will need a genre[] in the future, but for now we can ignore it
       const updatedWork: Work = await this.workService.updateWork(work_id, work)
       res.json(updatedWork)
     } catch (error) {
