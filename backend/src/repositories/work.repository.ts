@@ -38,4 +38,8 @@ export class WorkRepository implements IWorkRepository {
       }
     })
   }
+
+  public async getWorkByTitle(title: string): Promise<Work | null> {
+    return await prisma.work.findUnique({ where: { title } }) as WorkEntity | null
+  }
 }

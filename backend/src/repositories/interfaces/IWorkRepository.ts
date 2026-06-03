@@ -6,4 +6,5 @@ export interface IWorkRepository {
   updateWork(work_id: string, work: Partial<Work>): Promise<Work>
   deleteWork(work_id: string): Promise<Work>
   getWorksByGenre(genre: string): Promise<Work[]>
+  getWorkByTitle(title: string): Promise<Work | null>
 }
