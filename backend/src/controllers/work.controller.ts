@@ -74,7 +74,7 @@ export class WorkController {
         res.status(400).json({ error: "Invalid work ID" })
         return
       }
-
+      // TODO: updateWork will need a genre[] in the future, but for now we can ignore it
       const updatedWork: Work = await this.workService.updateWork(work_id, work)
       res.json(updatedWork)
     } catch (error) {
