@@ -48,7 +48,7 @@ model Work {
   @@map("works")
 
   work_id String @id @default(nanoid())
-  title   String
+  title   String @unique
   author_id  String
   description String?
   cover_image_url String?
