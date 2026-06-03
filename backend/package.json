@@ -9,7 +9,7 @@
     "start": "node build/server.js",
     "test": "jest",
     "test:unit": "jest --testPathPatterns=\\.spec\\.ts$",
-    "test:integration": "jest --testPathPattern=tests/"
+    "test:integration": "dotenv -e test/.env.test -- jest --testPathPatterns=test/"
   },
   "keywords": [],
   "author": "",
