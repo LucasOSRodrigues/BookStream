@@ -5,9 +5,11 @@ export class WorkService {
   constructor(private workRepository: IWorkRepository) {}
 
   async createWork(work: Work, genres: string[]): Promise<Work> {
-    const existingWork = await this.workRepository.getWorkById(work.work_id)
-
-    if (existingWork) throw new Error("Work with this ID already exists")
+    // Only check if work already exists if title is provided
+    if (work.title) {
+      const existingWork = await this.workRepository.getWorkByTitle(work.title)
+      if (existingWork) throw new Error("Work with this title already exists")
+    }
 
     for (const _genre of genres) {
       //TODO: check if the genre exists in the database
