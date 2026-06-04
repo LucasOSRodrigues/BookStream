@@ -43,5 +43,5 @@
 
     "moduleResolution": "node16",
   },
-  "exclude": ["prisma.config.ts", "jest.config.ts"],
+  "exclude": ["prisma.config.ts", "jest.config.ts", "test/", "src/**/*.spec.ts"],
 }
